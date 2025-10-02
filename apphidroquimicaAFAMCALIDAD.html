@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HIDROQUÍMICA – Formulario de Muestreo</title>
+  <style>
+    :root {
+      --bg-light: #ffffff;
+      /* Fondo blanco */
+      --bg-panel: #f8fafc;
+      /* Gris muy claro para paneles */
+      --bg-card: #ffffff;
+      /* Fondo de tarjetas blanco */
+      --border: #e2e8f0;
+      /* Borde gris claro */
+
+      /* Paleta vibrante profesional */
+      --primary: #0066cc;
+      /* Azul corporativo */
+      --primary-light: #3385d6;
+      /* Azul más claro */
+      --primary-dark: #0052a3;
+      /* Azul más oscuro */
+
+      --accent: #00a86b;
+      /* Verde profesional */
+      --accent-light: #33b989;
+      /* Verde más claro */
+
+      /* Colores de estado */
+      --ok: #10b981;
+      /* Verde éxito */
+      --warn: #f59e0b;
+      /* Ámbar advertencia */
+      --bad: #ef4444;
+      /* Rojo error */
+
+      /* Texto */
+      --text: #1e293b;
+      /* Texto principal gris oscuro */
+      --text-muted: #64748b;
+      /* Texto secundario */
+      --text-light: #ffffff;
+      /* Texto blanco */
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg-light);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header con logo */
+    header {
+           z-index: 10;
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border-bottom: 3px solid var(--primary);
+      padding: 1rem 1.25rem;
+      box-shadow: 0 2px 20px rgba(0, 102, 204, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+    }
+
+    .header-content {
+      flex: 1;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    header small {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 1rem auto 3rem;
+      padding: 0 1rem;
+    }
+
+    /* Tabs rediseñadas */
+    .tabs {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 2rem;
+    }
+
+    .tab-btn {
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      padding: .7rem 1.2rem;
+      border-radius: .75rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--primary-light);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+    }
+
+    .tab-btn[aria-selected="true"] {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--text-light);
+      border-color: var(--primary);
+      box-shadow: 0 6px 20px rgba(0, 102, 204, 0.2);
+    }
+
+    /* Paneles con sombra */
+    .panel {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 2rem;
+    }
+
+    .panel.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.2rem;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .col-12 {
+      grid-column: span 12
+    }
+
+    .col-6 {
+      grid-column: span 6
+    }
+
+    .col-4 {
+      grid-column: span 4
+    }
+
+    .col-3 {
+      grid-column: span 3
+    }
+
+    /* Tarjetas mejoradas */
+    .card {
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 30px rgba(0, 102, 204, 0.15);
+      transform: translateY(-2px);
+    }
+
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    legend {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      font-size: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary);
+      width: 100%;
+    }
+
+    label {
+      display: block;
+      font-size: .9rem;
+      color: var(--text-muted);
+      margin-bottom: .5rem;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: var(--bg-panel);
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: .75rem;
+      padding: .75rem 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1);
+      background: var(--bg-card);
+      transform: translateY(-1px);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+      font-family: inherit;
+
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.2rem;
+    }
+
+    .row>div {
+      grid-column: span 3
+    }
+
+    .row .span-4 {
+      grid-column: span 4
+    }
+
+    .row .span-6 {
+      grid-column: span 6
+    }
+
+    .row .span-8 {
+      grid-column: span 8
+    }
+
+    .row .span-12 {
+      grid-column: span 12
+    }
+
+    /* Botones mejorados */
+    .actions {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      color: var(--text);
+      padding: .75rem 1.5rem;
+      border-radius: .75rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-color: transparent;
+    }
+
+    .btn.primary:hover {
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      box-shadow: 0 6px 20px rgba(0, 102, 204, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--text-muted);
+    }
+
+    .mini {
+      font-size: .85rem;
+      padding: .5rem 1rem;
+    }
+
+    /* Tablas mejoradas */
+    .table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+      margin-top: 1rem;
+    }
+
+    .table thead th {
+      font-size: .85rem;
+      color: var(--text-muted);
+      text-align: left;
+      font-weight: 600;
+      padding: 1rem;
+      border-bottom: 2px solid var(--primary);
+      background: var(--bg-panel);
+    }
+
+    .table tbody tr {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(0, 102, 204, 0.1);
+    }
+
+    .table tbody td {
+      padding: 1rem;
+      vertical-align: middle;
+      border: none;
+    }
+
+    .table input,
+    .table select {
+      padding: .6rem .8rem;
+      font-size: .9rem;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+    }
+
+    /* Pills/etiquetas mejoradas */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .5rem 1rem;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+
+    .ok {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--ok);
+      border: 2px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .warn {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warn);
+      border: 2px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .bad {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--bad);
+      border: 2px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .hint {
+      color: var(--text-muted);
+      font-size: .85rem;
+      line-height: 1.4;
+      margin-top: 0.5rem;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: 1fr 380px;
+    }
+
+    @media (max-width:1020px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .sticky-aside {
+        position: static;
+      }
+
+      header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+
+      .logo-container {
+        justify-content: center;
+      }
+    }
+
+    /* Aside resumen mejorado */
+    .sticky-aside {
+      position: sticky;
+      top: 120px;
+      align-self: start;
+    }
+
+    .summary {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .badge {
+      background: var(--bg-panel);
+      border: 2px solid var(--border);
+      padding: .75rem 1rem;
+      border-radius: .75rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      color: var(--text);
+    }
+
+    .badge:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+    }
+
+    .foot {
+      color: var(--text-muted);
+      font-size: .8rem;
+      margin-top: 1.5rem;
+      border-top: 2px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    /* Efectos de gradiente en textos importantes */
+    .gradient-text {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+/* --- Ajuste global de tamaño para todos los campos --- */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+input[type="file"],
+select,
+textarea {
+  min-width: 90px;   /* más anchos */
+  height: 42px;       /* más altos */
+  font-size: 15px;    /* texto más legible */
+  padding: 8px 12px;  /* más espacio interno */
+  border-radius: 8px; /* bordes suaves */
+}
+
+/* pills de estado (Cumple / No cumple) */
+.pill {
+  font-size: 15px;
+  padding: 6px 14px;
+}
+
+/* botones */
+button {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+  </style>
+</head>
+
+<body>
+  <header
+    style="border-bottom: 3px solid #0066cc; padding: 1.5rem 1.25rem; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <div class="logo-container"
+      style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto;">
+      <img
+        src="https://scontent.feoh4-4.fna.fbcdn.net/v/t39.30808-6/288063394_1187830375370903_6514018949375245921_n.png?stp=dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=86c6b0&_nc_ohc=o1MVRnDOBc0Q7kNvwHFkpmo&_nc_oc=AdnAfesh18xRB3qgYowZaEGoektv8R4TNcAMElXECJ5fnhy2SLSKzog2COfmL0r6uEA&_nc_zt=23&_nc_ht=scontent.feoh4-4.fna&_nc_gid=INLwmhdpfIqptCmZ2G145g&oh=00_AfbdE6wziIcVbp-kgcgsZSs63e94kVsHWw4DWIF5_H1x0A&oe=68DC86C7"
+        alt="HidroQuímica Laboratorio Ambiental"
+        style="width: 300px; height: auto; max-height: 150px; object-fit: contain; transition: all 0.3s ease; border: 3px solid #0066cc; padding: 6px; background: white; box-shadow: 0 4px 20px rgba(0,102,204,0.2); border-radius: 6px;"
+        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 25px rgba(0,102,204,0.3)'"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 20px rgba(0,102,204,0.2)'">
+      <div class="header-content" style="flex: 1; min-width: 350px;">
+        <h1 style="margin: 0 0 0.3rem 0; font-size: 1.8rem; font-weight: 700; color: #0066cc;">HIDROQUÍMICA – Registro
+          de Muestreo <small style="font-size: 0.9rem; color: #64748b;">v. demo</small></h1>
+        <small style="font-size: 1rem; color: #475569; font-weight: 500;">Bloques A–F: Identificación, Operación,
+          Calidad, Evidencias, Cálculos y Reporte.</small>
+      </div>
+    </div>
+  </header>
+
+  <div class="container two-col">
+    <main>
+      <!-- Tabs -->
+      <nav class="tabs" role="tablist" aria-label="Secciones del formulario">
+        <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-a" id="tab-a-btn">A.
+          Identificación</button>
+        <button class="tab-btn" role="tab" aria-controls="tab-b" id="tab-b-btn">B. Alícuotas</button>
+        <button class="tab-btn" role="tab" aria-controls="tab-c" id="tab-c-btn">C. Calidad (FGM-010)</button>
+        <button class="tab-btn" role="tab" aria-controls="tab-d" id="tab-d-btn">D. Evidencias</button>
+        <button class="tab-btn" role="tab" aria-controls="tab-e" id="tab-e-btn">E. Cálculos</button>
+        <button class="tab-btn" role="tab" aria-controls="tab-f" id="tab-f-btn">F. Reporte</button>
+      </nav>
+
+      <!-- Panel A -->
+      <section class="panel active" id="tab-a" role="tabpanel" aria-labelledby="tab-a-btn">
+        <fieldset class="card">
+          <legend>Bloque A – Identificación & Contexto</legend>
+          <div class="row">
+            <div class="span-4">
+              <label for="idMuestreo">ID Muestreo *</label>
+              <input id="idMuestreo" required />
+            </div>
+            <div class="span-4">
+              <label for="fecha">Fecha *</label>
+              <input type="date" id="fecha" required />
+            </div>
+            <div class="span-4">
+              <label for="tipo">Tipo de muestreo *</label>
+              <select id="tipo" required>
+                <option value="">Selecciona…</option>
+                <option>Continuo</option>
+                <option>Irregular</option>
+                <option>Por baches</option>
+              </select>
+            </div>
+
+            <div class="span-6">
+              <label for="cliente">Cliente *</label>
+              <input id="cliente" list="cat-clientes" required />
+              <datalist id="cat-clientes">
+                <option>Cliente A</option>
+                <option>Cliente B</option>
+              </datalist>
+            </div>
+            <div class="span-6">
+              <label for="punto">Punto *</label>
+              <input id="punto" list="cat-puntos" required />
+              <datalist id="cat-puntos">
+                <option>Punto 1</option>
+                <option>Punto 2</option>
+              </datalist>
+            </div>
+
+            <div class="span-6">
+              <label for="tecnico">Técnico responsable *</label>
+              <input id="tecnico" list="cat-tecnicos" required />
+              <datalist id="cat-tecnicos">
+                <option>Nombre 1</option>
+                <option>Nombre 2</option>
+              </datalist>
+            </div>
+            <div>
+              <label for="tAmb">T° ambiente (°C)</label>
+              <input id="tAmb" type="number" step="0.1" min="0" max="60" />
+            </div>
+            <div>
+              <label for="hr">HR (%)</label>
+              <input id="hr" type="number" step="1" min="0" max="100" />
+            </div>
+            <div>
+              <label for="msnm">MSNM</label>
+              <input id="msnm" type="number" step="1" min="-50" max="6000" />
+            </div>
+
+            <div class="span-6">
+              <label>Geolocalización</label>
+              <div class="row">
+                <!-- Coordenada 1 -->
+                <div style="grid-column: span 12; margin-bottom: 0.5rem;">
+                  <label style="font-size: rem; color: #64748b; margin-bottom: 0.25rem;">Coordenadas</label>
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="number" id="coord1-grados" placeholder="grados" min="0" max="360" step="1"
+                      style="flex: 1; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem;">
+                    <span>°</span>
+                    <input type="number" id="coord1-minutos" placeholder="minutos" min="0" max="59" step="1"
+                      style="flex: 1; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem;">
+                    <span>'</span>
+                    <input type="number" id="coord1-segundos" placeholder=segundos' min="0" max="59.999" step="0.001"
+                      style="flex: 1.5; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem;">
+                    <span>"</span>
+                  </div>
+                </div>
+
+
+                <!-- Horas (se mantienen igual) -->
+                <div style="grid-column: span 6;">
+                  <label for="horaIni" style="font-size: 0.8rem; color: #64748b;">Hora inicio</label>
+                  <input id="horaIni" type="time"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem;">
+                </div>
+                <div style="grid-column: span 6;">
+                  <label for="horaFin" style="font-size: 0.8rem; color: #64748b;">Hora fin</label>
+                  <input id="horaFin" type="time"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem;">
+                </div>
+              </div>
+            </div>
+
+            <div class="span-12">
+              <label for="obs">Observaciones</label>
+              <textarea id="obs" placeholder="Observaciones relevantes del muestreo…"></textarea>
+            </div>
+          </div>
+          <p class="hint">Campos obligatorios: ID Muestreo, Cliente, Punto, Tipo, Técnico, Fecha. Reglas de rango: pH
+            (0–14), Cond (&gt;0), ORP (−2000 a 2000), OD (0–20), T (0–60).</p>
+        </fieldset>
+      </section>
+
+      <!-- Panel B -->
+      <section class="panel" id="tab-b" role="tabpanel" aria-labelledby="tab-b-btn">
+        <fieldset class="card">
+          <legend>Bloque B – Operación (Alícuotas)</legend>
+          <div class="actions">
+            <button type="button" class="btn primary mini" id="addAli">+ Agregar alícuota</button>
+            <span class="hint">Q = Volumen (L) / Tiempo (s) • Se calcula por fila.</span>
+          </div>
+          <table class="table" id="aliTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Hora *</th>
+                <th>Vol (L) *</th>
+                <th>Tiempo (s) *</th>
+                <th>Q (L/s)</th>
+                <th>OD (mg/L)</th>
+                <th>T (°C)</th>
+                <th>pH</th>
+                <th>Conduct. (µS/cm)</th>
+                <th>ORP (mV)</th>
+                <th>V alícuota (L)</th>
+                <th>Aspecto</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="actions">
+            <span class="badge">Q_prom: <span id="qProm">0.000</span> L/s</span>
+            <span id="qcStatus" class="pill warn">QC Global: —</span>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- Panel C -->
+<section class="panel" id="tab-c" role="tabpanel" aria-labelledby="tab-c-btn">
+
+  <fieldset class="card" style="margin-bottom: 2rem;">
+    <legend>Verificaciones FGM-010</legend>
+    <div class="actions">
+      <button type="button" class="btn primary mini" id="addQC">+ Agregar verificación</button>
+      <span class="hint">Debe existir verificación Intermedia para “Compuesto”.</span>
+    </div>
+    <table class="table" id="qcTable">
+      <thead>
+        <tr>
+          <th>Equipo/Sonda</th>
+          <th>Tipo</th>
+          <th>Estándar usado</th>
+          <th>Lectura</th>
+          <th>Criterio mín</th>
+          <th>Criterio máx</th>
+          <th>Cumple</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </fieldset>
+
+  <fieldset class="card" style="margin-bottom: 2rem;">
+    <legend>Calibraciones de Sondas</legend>
+    <div class="actions">
+      <button type="button" class="btn primary mini" id="addCal">+ Agregar calibración</button>
+    </div>
+    <table class="table" id="calTable">
+      <thead>
+        <tr>
+          <th>Equipo/Sonda</th>
+          <th>Código Sonda</th>
+          <th>Lectura (%)</th>
+          <th>Criterio mín</th>
+          <th>Criterio máx</th>
+          <th>Cumple</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </fieldset>
+
+  <fieldset class="card">
+    <legend>Verificación de Repetibilidad en Alícuotas</legend>
+    <div class="actions">
+      <button type="button" class="btn primary mini" id="addAliVer">+ Agregar verificación alícuota</button>
+      <span class="hint">La repetibilidad se calcula como: |Prueba 1 - Prueba 2| / Promedio(Pruebas)</span>
+    </div>
+    <table class="table" id="aliVerTable">
+      <thead>
+        <tr>
+          <th>N° Alícuota</th>
+          <th>Parámetro</th>
+          <th>Prueba 1</th>
+          <th>Prueba 2</th>
+          <th>Repetibilidad</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </fieldset>
+
+</section>
+
+      <!-- Panel D -->
+      <section class="panel" id="tab-d" role="tabpanel" aria-labelledby="tab-d-btn">
+        <fieldset class="card">
+          <legend>Bloque D – Evidencias & Custodia</legend>
+          <div class="actions">
+            <button type="button" class="btn primary mini" id="addEvi">+ Agregar evidencia</button>
+          </div>
+          <table class="table" id="eviTable">
+            <thead>
+              <tr>
+                <th>Tipo de foto/doc</th>
+                <th>Archivo</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </fieldset>
+      </section>
+
+      <!-- Panel E -->
+      <section class="panel" id="tab-e" role="tabpanel" aria-labelledby="tab-e-btn">
+        <fieldset class="card">
+          <legend>Bloque E – Cálculos & Consolidación</legend>
+          <div class="row">
+            <div>
+              <label># Alícuotas</label>
+              <input id="nAli" readonly />
+            </div>
+            <div>
+              <label>Q_prom (L/s)</label>
+              <input id="qProm2" readonly />
+            </div>
+            <div>
+              <label>% en rango (variables clave)</label>
+              <input id="pctRango" readonly />
+            </div>
+            <div>
+              <label>QC Global</label>
+              <input id="qcGlobal" readonly />
+            </div>
+            <div class="span-12">
+              <label>V a componer (referencia)</label>
+              <input id="vComp" placeholder="(según fórmula del formato)" />
+            </div>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- Panel F -->
+      <section class="panel" id="tab-f" role="tabpanel" aria-labelledby="tab-f-btn">
+        <fieldset class="card">
+          <legend>Bloque F – Reporte</legend>
+          <div class="row">
+            <div class="span-6">
+              <label>Resumen ejecutivo (auto/edición)</label>
+              <textarea id="resumen"
+                placeholder="Se realizó muestreo en …; Q_prom= …; QC Global= …; Hallazgos: …"></textarea>
+            </div>
+            <div class="span-6">
+              <label>Estado cadena de custodia</label>
+              <select id="custodia">
+                <option>En preparación</option>
+                <option>Completada</option>
+                <option>Adjunta en anexo</option>
+              </select>
+            </div>
+            <div class="span-12">
+              <div class="actions">
+                <button class="btn primary">Guardar borrador</button>
+                <button class="btn">Exportar (PDF)</button>
+                <button class="btn ghost">Limpiar</button>
+              </div>
+              <p class="hint">El informe final incluirá ficha por muestreo, matriz QC (semáforo), y anexos de alícuotas,
+                calibraciones y custodia.</p>
+            </div>
+          </div>
+        </fieldset>
+      </section>
+    </main>
+
+    <!-- Aside resumen -->
+    <aside class="sticky-aside">
+      <div class="card summary">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+          <strong class="gradient-text">Ficha rápida</strong>
+          <span class="badge" id="badgeTipo">Tipo: —</span>
+        </div>
+        <div><small class="hint">ID</small>
+          <div id="s_id" class="badge">—</div>
+        </div>
+        <div><small class="hint">Fecha</small>
+          <div id="s_fecha" class="badge">—</div>
+        </div>
+        <div><small class="hint">Cliente / Punto</small>
+          <div id="s_cli" class="badge">—</div>
+        </div>
+        <div><small class="hint">Técnico</small>
+          <div id="s_tec" class="badge">—</div>
+        </div>
+        <div><small class="hint">Q_prom</small>
+          <div id="s_q" class="badge">0.000 L/s</div>
+        </div>
+        <div><small class="hint">QC Global</small>
+          <div id="s_qc" class="badge">—</div>
+        </div>
+        <div class="foot">Validaciones activas: pH (0–14), Cond (&gt;0), ORP (−2000 a 2000), OD (0–20), T (0–60).</div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    /* ===== Utilidades ===== */
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+    const fmt = (n, d = 3) => (isFinite(n) ? Number(n).toFixed(d) : '0.000');
+
+    function rangeCheck(val, min, max, strictGt = false) {
+      if (val === '' || val === null || isNaN(val)) return null;
+      const v = Number(val);
+      if (strictGt) return (v > min) ? (v <= max ? 'ok' : 'bad') : 'bad';
+      if (v < min) return 'bad';
+      if (v > max) return 'bad';
+      // near edges (warn) else ok
+      const span = max - min;
+      const near = span * 0.05;
+      if (v - min < near || max - v < near) return 'warn';
+      return 'ok';
+    }
+    function pillFromStatus(st) { if (st === 'ok') return 'pill ok'; if (st === 'warn') return 'pill warn'; if (st === 'bad') return 'pill bad'; return 'pill'; }
+
+    /* ===== Tabs ===== */
+    const tabs = $$('.tab-btn');
+    const panels = $$('.panel');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => b.setAttribute('aria-selected', 'false'));
+        panels.forEach(p => p.classList.remove('active'));
+        btn.setAttribute('aria-selected', 'true');
+        const panel = $('#' + btn.getAttribute('aria-controls'));
+        panel.classList.add('active');
+      });
+    });
+
+    /* ===== Panel B: Alícuotas ===== */
+    const aliTBody = $('#aliTable tbody');
+    const qPromEl = $('#qProm');
+    const qcStatus = $('#qcStatus');
+    const nAliEl = $('#nAli');
+    const qProm2 = $('#qProm2');
+    const pctRango = $('#pctRango');
+    const qcGlobal = $('#qcGlobal');
+    let aliIndex = 0;
+
+    function addAliRow(data = {}) {
+      aliIndex++;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+    <td>${aliIndex}</td>
+    <td><input type="time" required value="${data.hora || ''}"></td>
+    <td><input type="number" step="0.001" min="0" required value="${data.vol || ''}"></td>
+    <td><input type="number" step="0.1" min="0.1" required value="${data.tiempo || ''}"></td>
+    <td><input type="number" step="0.001" readonly></td>
+    <td><input type="number" step="0.01" min="0" max="20" value="${data.od || ''}"></td>
+    <td><input type="number" step="0.1" min="0" max="60" value="${data.t || ''}"></td>
+    <td><input type="number" step="0.01" min="0" max="14" value="${data.ph || ''}"></td>
+    <td><input type="number" step="0.1" min="0.0001" value="${data.cond || ''}"></td>
+    <td><input type="number" step="1" min="-2000" max="2000" value="${data.orp || ''}"></td>
+    <td><input type="number" step="0.001" min="0" value="${data.valiq || ''}"></td>
+    <td><input type="text" placeholder="Aspecto cualitativo" value="${data.aspecto || ''}"></td>
+    <td><button type="button" class="btn mini">Eliminar</button></td>
+  `;
+      aliTBody.appendChild(tr);
+
+      const inputs = $$('input', tr);
+      const [hora, vol, tiempo, q, od, t, ph, cond, orp] = inputs;
+
+      function recalc() {
+        const V = parseFloat(vol.value); const T = parseFloat(tiempo.value);
+        const qv = (isFinite(V) && isFinite(T) && T > 0) ? (V / T) : 0;
+        q.value = fmt(qv);
+        updateSummary();
+      }
+      inputs.forEach(i => i.addEventListener('input', recalc));
+
+      tr.querySelector('button').addEventListener('click', () => {
+        tr.remove(); renumberAli(); updateSummary();
+      });
+
+      recalc();
+    }
+    function renumberAli() {
+      let i = 1;
+      $$('#aliTable tbody tr').forEach(tr => { tr.firstElementChild.textContent = i++; });
+    }
+    $('#addAli').addEventListener('click', () => addAliRow());
+
+    /* ===== Panel C: QC ===== */
+    const qcTBody = $('#qcTable tbody');
+    function addQCRow(data = {}) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+    <td><input list="cat-equipos" placeholder="Equipo/Sonda" value="${data.eq || ''}"></td>
+    <td>
+      <select>
+        <option>Inicial</option><option>Intermedia</option><option>Final</option>
+      </select>
+    </td>
+    <td><input type="text" placeholder="Estándar" value="${data.std || ''}"></td>
+    <td><input type="number" step="0.01" placeholder="Lectura" value="${data.read || ''}"></td>
+    <td><input type="number" step="0.01" placeholder="Mín" value="${data.min || ''}"></td>
+    <td><input type="number" step="0.01" placeholder="Máx" value="${data.max || ''}"></td>
+    <td class="qc-cell"><span class="pill">—</span></td>
+    <td><button type="button" class="btn mini">Eliminar</button></td>
+  `;
+      qcTBody.appendChild(tr);
+      const [eq, tipo, std, lectura, min, max] = $$('input,select', tr);
+
+      function evalQC() {
+        const L = parseFloat(lectura.value);
+        const mi = parseFloat(min.value);
+        const ma = parseFloat(max.value);
+        let status = '—';
+        if (isFinite(L) && isFinite(mi) && isFinite(ma)) {
+          status = (L >= mi && L <= ma) ? 'ok' : 'bad';
+        }
+        const cell = $('.qc-cell', tr);
+        cell.innerHTML = `<span class="${pillFromStatus(status)}">${status === 'ok' ? 'Cumple' : 'No cumple'}</span>`;
+        updateSummary();
+      }
+      [lectura, min, max].forEach(i => i.addEventListener('input', evalQC));
+      tr.querySelector('button').addEventListener('click', () => { tr.remove(); updateSummary(); });
+      evalQC();
+    }
+    $('#addQC').addEventListener('click', () => addQCRow());
+
+    /* ===== Panel D: Evidencias ===== */
+    const eviTBody = $('#eviTable tbody');
+    function addEviRow(data = {}) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+    <td>
+      <select>
+       <option>Sitio Monitoreo</option>
+       <option>Orden formatos</option>
+<option>Calibración equipos</option>
+<option>Condiciones ambientales</option>
+<option>Toma muestras in situ</option>
+<option>Verificación testigo temperatura</option>
+<option>Verificación intermedia</option>
+<option>Condiciones ambientales al finalizar</option>
+<option>Verificación final equipos</option>
+<option>Contador inicial</option>
+<option>Nº Serie Contador</option>
+<option>Nº Contrato</option>
+<option>Metodología aforo</option>
+<option>Envasado recipientes</option>
+<option>Contador final</option>
+      </select>
+    </td>
+    <td><input type="file" accept="image/*,.pdf"></td>
+    <td><button type="button" class="btn mini">Eliminar</button></td>
+  `;
+      eviTBody.appendChild(tr);
+      tr.querySelector('button').addEventListener('click', () => tr.remove());
+    }
+    $('#addEvi').addEventListener('click', () => addEviRow());
+
+    /* ===== Resumen lateral y cálculos globales ===== */
+    function collectAli() {
+      const rows = $$('#aliTable tbody tr');
+      return rows.map(tr => {
+        const tds = $$('td', tr);
+        const inputs = $$('input', tr);
+        return {
+          hora: inputs[0]?.value, vol: parseFloat(inputs[1]?.value),
+          tiempo: parseFloat(inputs[2]?.value), q: parseFloat(inputs[3]?.value),
+          od: parseFloat(inputs[4]?.value), t: parseFloat(inputs[5]?.value),
+          ph: parseFloat(inputs[6]?.value), cond: parseFloat(inputs[7]?.value),
+          orp: parseFloat(inputs[8]?.value),
+        };
+      });
+    }
+    function qcHasIntermedia() {
+      const tipos = $$('#qcTable tbody tr select');
+      return tipos.some(s => s.value === 'Intermedia');
+    }
+    function qcAllPass() {
+      const cells = $$('#qcTable tbody tr .qc-cell');
+      if (cells.length === 0) return null;
+      return cells.every(c => c.textContent.includes('Cumple'));
+    }
+    function varInRangeStats(ali) {
+      const checks = [];
+      ali.forEach(a => {
+        if (!isNaN(a.ph)) checks.push(rangeCheck(a.ph, 0, 14) === 'ok');
+        if (!isNaN(a.cond)) checks.push(rangeCheck(a.cond, 0, 1e12, true) === 'ok');
+        if (!isNaN(a.orp)) checks.push(rangeCheck(a.orp, -2000, 2000) === 'ok');
+        if (!isNaN(a.od)) checks.push(rangeCheck(a.od, 0, 20) === 'ok');
+        if (!isNaN(a.t)) checks.push(rangeCheck(a.t, 0, 60) === 'ok');
+      });
+      const ok = checks.filter(Boolean).length;
+      const total = checks.length || 1;
+      return Math.round((ok / total) * 100);
+    }
+    function updateSummary() {
+      // A: resumen
+      $('#s_id').textContent = $('#idMuestreo').value || '—';
+      $('#s_fecha').textContent = $('#fecha').value || '—';
+      $('#s_cli').textContent = [$('#cliente').value, $('#punto').value].filter(Boolean).join(' / ') || '—';
+      $('#s_tec').textContent = $('#tecnico').value || '—';
+      $('#badgeTipo').textContent = 'Tipo: ' + ($('#tipo').value || '—');
+
+      // B: cálculos
+      const ali = collectAli();
+      const qVals = ali.map(a => a.q).filter(v => isFinite(v));
+      const qprom = qVals.length ? qVals.reduce((s, v) => s + v, 0) / qVals.length : 0;
+      qPromEl.textContent = fmt(qprom);
+      $('#s_q').textContent = fmt(qprom) + ' L/s';
+      nAliEl.value = ali.length;
+      qProm2.value = fmt(qprom);
+
+      // % en rango
+      const pct = varInRangeStats(ali);
+      pctRango.value = pct + ' %';
+
+      // QC Global
+      let qc = '—', cls = 'warn';
+      const allPass = qcAllPass();
+      const inter = qcHasIntermedia();
+      if (allPass === null) { qc = 'Sin datos'; cls = 'warn'; }
+      else if (allPass && inter) { qc = 'Cumple'; cls = 'ok'; }
+      else { qc = 'No cumple'; cls = 'bad'; }
+      qcGlobal.value = qc;
+      qcStatus.className = 'pill ' + cls;
+      qcStatus.textContent = 'QC Global: ' + qc;
+
+      // Etiquetas de semáforo visual en panel B (pH/Cond/ORP/OD/T)
+      // (opcional: podríamos colorear inputs según rango)
+    }
+    updateSummary();
+
+    // Listener para datos del bloque A
+    ['idMuestreo', 'fecha', 'cliente', 'punto', 'tecnico', 'tipo'].forEach(id => {
+      $('#' + id).addEventListener('input', updateSummary);
+    });
+
+    // Semillas de ejemplo
+    addAliRow({ hora: '08:15', vol: 2.4, tiempo: 120, ph: 7.2, cond: 350, orp: 220, od: 7.8, t: 22.3, valiq: 0.5 });
+    addAliRow({ hora: '08:30', vol: 2.6, tiempo: 130, ph: 7.1, cond: 360, orp: 215, od: 7.6, t: 22.5, valiq: 0.5 });
+    addQCRow({ eq: 'Multiparámetro 01', std: 'pH 7.00', read: 6.99, min: 6.8, max: 7.2 });
+    addQCRow({ eq: 'Multiparámetro 01', std: 'pH 7.00', read: 7.02, min: 6.8, max: 7.2 });
+    addEviRow({});
+
+
+/* ===== Panel C - Sub-Panel 2: Calibraciones (NUEVO) ===== */
+const calTBody = $('#calTable tbody');
+function addCalRow(data = {}) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input list="cat-equipos" placeholder="Equipo/Sonda" value="${data.eq || ''}"></td>
+    <td><input type="text" placeholder="Código de la sonda" value="${data.cod || ''}"></td>
+    <td><input type="number" step="0.1" placeholder="Lectura %" value="${data.read || ''}"></td>
+    <td><input type="number" step="0.1" placeholder="Mín %" value="${data.min || ''}"></td>
+    <td><input type="number" step="0.1" placeholder="Máx %" value="${data.max || ''}"></td>
+    <td class="qc-cell"><span class="pill">—</span></td>
+    <td><button type="button" class="btn mini">Eliminar</button></td>
+  `;
+  calTBody.appendChild(tr);
+  
+  const [eq, cod, lectura, min, max] = $$('input', tr);
+
+  function evalCal() {
+    const L = parseFloat(lectura.value);
+    const mi = parseFloat(min.value);
+    const ma = parseFloat(max.value);
+    let status = '—';
+    if (isFinite(L) && isFinite(mi) && isFinite(ma)) {
+      status = (L >= mi && L <= ma) ? 'ok' : 'bad';
+    }
+    const cell = $('.qc-cell', tr);
+    cell.innerHTML = `<span class="${pillFromStatus(status)}">${status === 'ok' ? 'Cumple' : 'No cumple'}</span>`;
+    // Podríamos conectar esto al updateSummary() global si es necesario.
+  }
+  [lectura, min, max].forEach(i => i.addEventListener('input', evalCal));
+  tr.querySelector('button').addEventListener('click', () => { tr.remove(); });
+  evalCal();
+}
+$('#addCal').addEventListener('click', () => addCalRow());
+
+
+/* ===== Panel C - Sub-Panel 3: Verificación Alícuotas (NUEVO) ===== */
+const aliVerTBody = $('#aliVerTable tbody');
+let aliVerIndex = 0;
+
+// Función para calcular la repetibilidad
+function calculateRepetibilidad(p1, p2, cell) {
+    const v1 = parseFloat(p1);
+    const v2 = parseFloat(p2);
+    if (!isFinite(v1) || !isFinite(v2)) {
+        cell.textContent = '—';
+        return;
+    }
+    const promedio = (v1 + v2) / 2;
+    if (promedio === 0) {
+        cell.textContent = 'N/A';
+        return;
+    }
+    const repetibilidad = Math.abs(v1 - v2) / promedio;
+    cell.textContent = (repetibilidad * 100).toFixed(2) + ' %';
+}
+
+
+function addAliVerRow(data = {}) {
+  aliVerIndex++;
+  
+  // Creamos 3 filas, una para cada parámetro (OD, Cond, pH), pero agrupadas visualmente.
+  const params = ['OD (mg/L)', 'Conduct. (µS/cm)', 'pH'];
+  params.forEach((param, index) => {
+    const tr = document.createElement('tr');
+    tr.dataset.group = aliVerIndex; // Para poder eliminar las 3 juntas
+    tr.innerHTML = `
+      ${index === 0 ? `<td rowspan="3" style="vertical-align: middle; text-align: center;"><input type="number" min="1" placeholder="#" value="${data.n_ali || ''}" style="width: 60px;"></td>` : ''}
+      <td><strong>${param}</strong></td>
+      <td><input type="number" step="0.01" class="prueba1"></td>
+      <td><input type="number" step="0.01" class="prueba2"></td>
+      <td class="repetibilidad-cell">—</td>
+      ${index === 0 ? `<td rowspan="3" style="vertical-align: middle;"><button type="button" class="btn mini delete-group">Eliminar</button></td>` : ''}
+    `;
+    aliVerTBody.appendChild(tr);
+
+    // Lógica de cálculo
+    const [p1_input, p2_input] = $$('input.prueba1, input.prueba2', tr);
+    const repetibilidadCell = $('.repetibilidad-cell', tr);
+    
+    const recalc = () => calculateRepetibilidad(p1_input.value, p2_input.value, repetibilidadCell);
+    p1_input.addEventListener('input', recalc);
+    p2_input.addEventListener('input', recalc);
+  });
+  
+  // Lógica para el botón de eliminar grupo
+  $$('.delete-group').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+          const row = e.target.closest('tr');
+          const group = row.dataset.group;
+          $$(`tr[data-group="${group}"]`, aliVerTBody).forEach(r => r.remove());
+      });
+  });
+}
+$('#addAliVer').addEventListener('click', () => addAliVerRow());
+
+  </script>
+
+  <datalist id="cat-equipos">
+    <option>Multiparámetro 01</option>
+    <option>Oxímetro 02</option>
+    <option>Conductímetro 03</option>
+  </datalist>
+
+</body>
+
+</html>
